@@ -1,0 +1,34 @@
+body {
+    background-color: var(--purple-300);
+}
+
+#app {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.new-button {
+    margin-bottom: 15px;
+}
+
+.p-dialog .p-inputtext {
+    margin-top: 10px;
+    margin-bottom: 10px; 
+}
+
+.p-button {
+    margin-right: 15px;
+    margin-top: 10px;
+}
+
+.p-dialog .p-inputtext, .p-dropdown {
+    width: 100%;
+}
+
+.p-datatable {
+    margin-bottom: 100px;
+}
+
+textarea {
+    resize: none;
+}

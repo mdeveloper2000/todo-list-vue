@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/primevue/resources/themes/lara-light-purple/theme.css">
+    <link href="https://unpkg.com/primeicons/primeicons.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/primevue/core/core.min.js"></script>
+    <script src="https://unpkg.com/primevue/panel/panel.min.js"></script>
+    <script src="https://unpkg.com/primevue/datatable/datatable.min.js"></script>
+    <script src="https://unpkg.com/primevue/column/column.min.js"></script>
+    <script src="https://unpkg.com/primevue/toast/toast.min.js"></script>
+    <script src="https://unpkg.com/primevue/toastservice/toastservice.min.js"></script>
+    <script src="https://unpkg.com/primevue/confirmdialog/confirmdialog.min.js"></script>
+    <script src="https://unpkg.com/primevue/confirmationservice/confirmationservice.min.js"></script>    
+    <title>Todo List</title>
+</head>
+
+<body>
+
+    <div id="app">
+        <p-confirmdialog></p-confirmdialog>
+        <p-toast position="top-right"></p-toast>
+        <p-panel header="Todo List">
+            A Todo List built with Vue.js and PrimeVue
+        </p-panel>
+        <p-button label="Add Task" class="new-button" @click="showNew = true" icon="pi pi-plus-circle"></p-button>  
+        <p-datatable :value="tasks">
+            <template #header>
+                <div>Tasks</div>
+            </template>
+            <p-column field="description" header="Description"></p-column>
+            <p-column field="priority" header="Priority"></p-column>            
+            <p-column field="id" header="Edit">
+                <template #body="slotProps">
+                    <p-button icon="pi pi-file-edit" severity="info" rounded raised @click="edit(slotProps.data.id)" />                    
+                </template>
+            </p-column>
+            <p-column field="id" header="Delete">
+                <template #body="slotProps">
+                    <p-button icon="pi pi-trash" severity="danger" rounded raised @click="deleteRow(slotProps.data.id)" />
+                </template>
+            </p-column>
+            <template #footer> Number of tasks: {{ tasks ? tasks.length : 0 }} </template>
+        </p-datatable>
+        <p-dialog v-model:visible="showNew" modal header="New Task" :style="{ width: '35rem' }">
+            <div>
+                <p-inputtext id="description" v-model="description" autocomplete="off" placeholder="Description" 
+                    @change="description=description.toUpperCase()" maxlength="30" />
+            </div>
+            <div>
+                <p-dropdown v-model="priority" :options="priorities" placeholder="Select a priority"></p-dropdown>
+            </div>
+            <div>
+                <p-button type="button" label="Cancel" severity="secondary" @click="clearNewFields" icon="pi pi-stop-circle"></p-button>
+                <p-button type="button" label="Save" @click="save" icon="pi pi-save"></p-button>
+            </div>          
+            <div>
+                <p-message severity="error" v-if="hasErrors" :closable="false">Fill in all fields</p-message>
+            </div>
+        </p-dialog>
+        <p-dialog v-model:visible="showEdit" modal header="Edit Task" :style="{ width: '35rem' }">
+            <div>
+                <p-inputtext v-model="description_edit" autocomplete="off" placeholder="Description" @change="description_edit=description_edit.toUpperCase()" />
+            </div>
+            <div>
+                <p-dropdown v-model="priority_edit" :options="priorities" placeholder="Select a priority"></p-dropdown>
+            </div>
+            <div>
+                <p-button type="button" label="Cancel" severity="secondary" @click="clearEditFields" icon="pi pi-stop-circle"></p-button>
+                <p-button type="button" label="Edit" @click="update" icon="pi pi-file-edit"></p-button>
+            </div>
+            <div>
+                <p-message severity="error" v-if="hasEditErrors" :closable="false">Fill out all fields</p-message>
+            </div>
+        </p-dialog>
+    </div>
+
+    <script src="app.js"></script>
+    
+</body>
+
+</html>
